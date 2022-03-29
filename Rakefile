@@ -31,7 +31,12 @@ namespace :db do
     task :migrate do
       require_relative './migrations/migrator.rb'
 
-      db_connector['database'] = 'active_record'
+      if ENV['RACK_ENV']
+        db_connector = nil
+      else
+        db_connector['database'] = 'active_record' 
+      end
+      
       ActiveRecord::Base.establish_connection(db_connector)
 
       db_migrate = Migrator.new.migrate
