@@ -20,12 +20,21 @@ namespace :db do
     puts "Database created." if db_create
   end
 
-  # new code begins
   desc "Drop the database"
   task :drop do
     ActiveRecord::Base.establish_connection(db_connector)
     db_drop = ActiveRecord::Base.connection.drop_database('active_record')
     puts "Database deleted." if db_drop
   end
-  # new code end
+
+  desc "Migrate the database"
+    task :migrate do
+      require_relative './migrations/migrator.rb'
+
+      db_connector['database'] = 'active_record'
+      ActiveRecord::Base.establish_connection(db_connector)
+
+      db_migrate = Migrator.new.migrate
+      puts "Database migrations ran successfully." if db_migrate
+    end
 end
