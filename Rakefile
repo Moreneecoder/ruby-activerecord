@@ -42,4 +42,8 @@ namespace :db do
       db_migrate = Migrator.new.migrate
       puts "Database migrations ran successfully." if db_migrate
     end
+
+    desc "Reset the database"
+    task :reset => [:drop, :create, :migrate]
+
 end
