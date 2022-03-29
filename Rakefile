@@ -9,7 +9,6 @@ namespace :db do
     adapter: 'postgresql'
   }
 
-  # new code begin
   desc "Create the database"
   task :create do
     ActiveRecord::Base.establish_connection(db_connector)
@@ -19,6 +18,14 @@ namespace :db do
     })
 
     puts "Database created." if db_create
+  end
+
+  # new code begins
+  desc "Drop the database"
+  task :drop do
+    ActiveRecord::Base.establish_connection(db_connector)
+    db_drop = ActiveRecord::Base.connection.drop_database('active_record')
+    puts "Database deleted." if db_drop
   end
   # new code end
 end
